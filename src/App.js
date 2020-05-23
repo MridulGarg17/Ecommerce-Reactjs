@@ -1,25 +1,47 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {Nav} from './component/Nav'
+import Cart from './component/Cart'
+import {Login} from './component/Login'
+// import {ProductList} from './component/ProductList'
+import {test as TEST} from './test'
+import "bootstrap/dist/css/bootstrap.min.css";
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import {storeProducts} from './static_data/data'
+import {Provider} from 'react-redux';
+import store from './Store';
+import {setProducts} from './actions/productAction'
+import ProductList from './component/ProductList'
+
 
 function App() {
+
+  useEffect(() => {
+    store.dispatch(setProducts(storeProducts));
+    return () => {
+      
+    }
+  }, [])
+
   return (
+    <Provider store={store}>
+    <Router> 
+    <React.Fragment>
+      <Nav/>
+      <Switch>
+    <Route exact path="/" component={ProductList} />
+    <Route exact path="/cart" component={Cart}/>
+    <Route exact path="/login" component={Login}/>
+    <Route exact path="/check" component={ProductList}/>
+    </Switch>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+   {/* <TEST/> */}
     </div>
+
+    </React.Fragment>
+    </Router>
+    </Provider>
   );
 }
 
