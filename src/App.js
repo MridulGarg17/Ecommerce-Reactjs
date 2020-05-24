@@ -1,11 +1,8 @@
 import React,{useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
-import {Nav} from './component/Nav'
+import Nav from './component/Nav'
 import Cart from './component/Cart'
-import {Login} from './component/Login'
-// import {ProductList} from './component/ProductList'
-import {test as TEST} from './test'
+import Login from './component/Login'
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import {storeProducts} from './static_data/data'
@@ -35,10 +32,6 @@ function App() {
     <Route exact path="/login" component={Login}/>
     <Route exact path="/check" component={ProductList}/>
     </Switch>
-    <div className="App">
-   {/* <TEST/> */}
-    </div>
-
     </React.Fragment>
     </Router>
     </Provider>

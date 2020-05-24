@@ -1,16 +1,12 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import {addToCart,removeFromCart} from '../actions/productAction'
+import {addToCart,removeFromCart,changeQuantity} from '../actions/productAction'
 import {connect} from 'react-redux';
-import { ADD_TO_CART } from '../actions/types';
 
 
- const Product = ({product,addToCart,removeFromCart}) => {
 
-// useEffect(() => {
-  
-// }, [product.inCart])
+ const Product = ({product,addToCart,removeFromCart,changeQuantity}) => {
+
 function Remove(props){
   if(!props.product.inCart) 
         return null; 
@@ -29,6 +25,25 @@ function AddToCart(props){
 }
 
 
+function Increment(props){
+  if(!props.product.inCart) 
+        return null; 
+    else
+        return <div> <button type="button" onClick={e=>incDecQuantity(false)} className="btn btn-success"> -</button>
+          {props.product.count}
+         <button type="button" onClick={e=>incDecQuantity(true)} className="btn btn-success">+</button>
+        
+        </div>
+        ; 
+}
+
+function incDecQuantity(flag){
+  changeQuantity(product,flag)
+}
+
+
+
+
 const handleClick= ()=>{
   addToCart(product)
 }
@@ -45,33 +60,18 @@ console.log(product)
         <div className="card">
        
         <div >
-         {/* <img src="https://www.amazon.in/images/I/71T0KJFxCHL._SL1500_.jpg"   style={{width:"100px"}}/> */}
-         <img src={product.phoneimg}   style={{width:"100px", marginLeft:"90px"}}/>
+         <img src={product.phoneimg}   alt="" style={{width:"100px", marginLeft:"90px"}}/>
        
         </div>
-        {/* <div className="title">
-          Title
-        </div>
-        <div>
-          Price
-        </div> */}
+       
           <ul class="list-group list-group-flush">
     <li className="list-group-item">Company : {product.company}</li>
       <li className="list-group-item">Model: {product.title}</li>
       <li className="list-group-item">Price : {product.price}</li>
-  </ul>
-          {/* <div className="card-footer d-flex justify-content-between ">
-            <div className="title">{product.title}</div>
-            <br/>
-            <div>
-              <span className="mr-1">$</span>
-              {product.price}
-            </div>  
-          </div> */}
-{console.log(product)}
-        {/* <button type="button" onClick={e=>handleClick()} className="btn btn-success"> { product.inCart ? "Added TO cart": "Add to cart"}</button> */}
+       <Increment product = {product} /> 
+      <li className="list-group-item"></li>
+  </ul>  
         <AddToCart product = {product} />
-        {/* <button type="button" onClick={e=>handleClick()} className="btn btn-success"> { product.inCart ? "Added TO cart": "Add to cart"}</button> */}
         <Remove product = {product} /> 
         </div>
       </ProductWrapper>
@@ -80,12 +80,7 @@ console.log(product)
 
 
 
-// const mapStateToProps = state => ({
-//   list:state.product.list
-// });
-
-
-export default connect(null,{addToCart,removeFromCart})(Product);
+export default connect(null,{addToCart,removeFromCart,changeQuantity})(Product);
 
 
 export const ProductWrapper = styled.div`

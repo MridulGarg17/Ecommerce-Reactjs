@@ -2,36 +2,52 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../static_data/logo.svg";
-// import { ButtonContainer } from "./Button";
+import { connect } from 'react-redux';
+import {logoutUser} from '../actions/authAction'
 
-export const Nav = () => {
+
+const Nav = ({ isLoggedin,logoutUser,totaProductCount }) => {
+
+function logout(){
+  logoutUser()
+}
+
   return (
-    <NavTag className="navbar navbar-expand-sm  navbar-dark px-sm-5">
+    <NavTag className="navbar navbar-expand-sm  navbar-dark px-sm-5" style={{ backgroundColor: 'green' }}>
+
+    Ecommerce : Mobile Shop
+
       <Link to="/">
         <img src={logo} alt="store" className="logo" />
       </Link>
       <ul className="navbar-nav align-items-center">
         <li className="nav-item ml-5">
           <Link to="/cart" className="nav-link">
-            View Cart(Y)
+    View Cart ({totaProductCount})
             </Link>
         </li>
         <li>
-          <Link to="/login" className="nav-link">
+          {!isLoggedin ? <Link to="/login" className="nav-link">
             Login
-            </Link></li>
+            </Link> :
+            <Link to="/" className="nav-link" onClick={e=>logout()}>
+              Logout
+            </Link>
+          }
+        </li>
       </ul>
-      {/* <Link to="/cart" className="ml-auto">
-          <ButtonContainer>
-            <span className="mr-2">
-              <i className="fas fa-cart-plus " />
-            </span>
-            my cart
-          </ButtonContainer>
-        </Link> */}
     </NavTag>
   )
 }
+
+const mapStateToProps = state => ({
+  isLoggedin: state.auth.isLoggedin,
+  totaProductCount: state.product.totaProductCount
+});
+
+
+export default connect(mapStateToProps, {logoutUser})(Nav);
+
 
 const NavTag = styled.nav`
   background: var(--mainBlue);
